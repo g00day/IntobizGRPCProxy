@@ -25,6 +25,25 @@ Clone the repo locally
     git clone https://github.com/g00day/IntobizGRPCProxy.git
 ```
 
+Get the main backend network address
+```
+    docker network inspect <network_name>(defaultly intobiz_shared_network)
+```
+
+And replace in cluster's address
+
+```
+load_assignment:
+cluster_name: grpc_service
+endpoints:
+    - lb_endpoints:
+        - endpoint:
+            address:
+            socket_address:
+                address: <YOUR ADDR>
+                port_value: 9001
+```
+
 Run the set up with docker in the set up directory
 ```
 docker run -d -p 8080:8080 --network intobiz_shared_network -v "<path-to-proxy>IntobizGRPCProxy/envoy.yaml":/etc/envoy/envoy.yaml envoyproxy/envoy:<version>
